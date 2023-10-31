@@ -1,0 +1,12 @@
+{
+  "name": "Alter-Chk-Scrapper",
+  "description": "A Script to Scrap @AlterChkBot Approved ccs from any Group",
+  "repository": "https://github.com/Bikash1225/AlterChk-Scrapper.git",
+  "env": {
+    "API_ID": "29890751",
+    "API_HASH": "7fbdb8f35aea92c9726f3f2667fbd548",
+    "SESSION": "AQC7CQ3rCrFAikT1QPKCli8zPpPBy5x4Fa1Ai3B6LhNor6aC0U5rzBfE_MtBvQ7NVpD2tBODz09WItS-E3Y9Csh1cQSgnUftvnIabUAnfOrZuTMYVWAz1rB7CrXZavf6W65oVDDmZ3EQykYHPd59iYfCWYlSR_KlpfPMqAR7cu8pNUno8bXQ_S096_6WHbzKahi4iF_IpS-5meHQL0ydcxGkLFG3pwGeHPzPN7xtfePEGK5QrTaAq2x1Gqbd4sxnzsg_ciF85SmeSnC29UmaHpVDblIwaOelWXYC6pWEhTFRuh6cFelTFdWNfknJdp7zcZCYvFd_75YbsOdMOkG-h5kGAAAAAYhlZO0A",
+    "SEND_ID": "-1001666512406"
+  },
+  "stack": "heroku-20"
+}
