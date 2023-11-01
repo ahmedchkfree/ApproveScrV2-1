@@ -3,10 +3,10 @@
   "description": "A Script to Scrap @AlterChkBot Approved ccs from any Group",
   "repository": "https://github.com/Bikash1225/AlterChk-Scrapper.git",
   "env": {
-    "API_ID": "29890751",
-    "API_HASH": "7fbdb8f35aea92c9726f3f2667fbd548",
-    "SESSION": "AQC7CQ3rCrFAikT1QPKCli8zPpPBy5x4Fa1Ai3B6LhNor6aC0U5rzBfE_MtBvQ7NVpD2tBODz09WItS-E3Y9Csh1cQSgnUftvnIabUAnfOrZuTMYVWAz1rB7CrXZavf6W65oVDDmZ3EQykYHPd59iYfCWYlSR_KlpfPMqAR7cu8pNUno8bXQ_S096_6WHbzKahi4iF_IpS-5meHQL0ydcxGkLFG3pwGeHPzPN7xtfePEGK5QrTaAq2x1Gqbd4sxnzsg_ciF85SmeSnC29UmaHpVDblIwaOelWXYC6pWEhTFRuh6cFelTFdWNfknJdp7zcZCYvFd_75YbsOdMOkG-h5kGAAAAAYhlZO0A",
-    "SEND_ID": "-1001666512406"
+    "API_ID": "6258636",
+    "API_HASH": "72e82ac4cfe8fe0df32860140fc8014d",
+    "SESSION": "AQBff8wAjPXtUdIhrviFtp2EjxuWi3Lqo6U8z8EgZ23M2aX5yLDog-N5A55sheBNUtIrEE-J_IxZbXiFqIiUUGOiWvm2feFo0tICnjs-rOc5-lSHOx81ihlABAheL3dvHIF1xaQea3yYLY38PF0QXjcwMaF5ENaHvInt30dPTl6M_uRnJL5Jr6X5-TQYlAs5EDfwSCqf7lwOMVO_90q_ytKpv_OutZq58Kj7-G1LhQ6-CmIFIW5fq82npUU7ngM3ak1IvRPMDL-rXCait4FF3ePSzbQ7rd8XJw8DoAJ61njT2xeaph2YqcYLE5q8e4ZJw97s60YT-ezI_TvB2SE81Cp0_llgAAAAF4SScaAA",
+    "SEND_ID": "-1002059793079"
   },
   "stack": "heroku-20"
 }

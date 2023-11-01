@@ -4,6 +4,7 @@ from pyrogram import Client, filters
 from config import API_ID, API_HASH, SESSION, SEND_ID
 from datetime import datetime
 import os
+import requests
 
 current_directory = os.path.dirname(os.path.realpath(__file__))
 
@@ -46,26 +47,37 @@ async def alterchkbot(app, message):
             if card_exists_in_alterchkbot_file(card):
                 return
 
-            # Replace checked
             new_text = re.sub(r'Checked by .* User]', '**Checked ву [˹ᴧŁþнᴧ ꭙ˼](tg://user?id=1057412250)** \n━━━━━━━━━━━━━━━━━',
                               message.text)
 
-            # Remove bot by line
             new_text = new_text.replace('Bot by --» Tfp0days☃️', '')
             new_text = new_text.replace('———»Details«———', '━━━━━━━━━━━━━━━━━')
             new_text = new_text.replace('———-»Info«-———-', '━━━━━━━━━━━━━━━━━')
             new_text = new_text.replace('-»', '➻')
 
-            # Extract card details
             cc = re.search(r'\d{16}', new_text).group(0)
             date = re.search(r'\d{2}\|\d{2}', new_text).group(0)
             cvv = re.search(r'\d{3}', new_text).group(0)
             bin = cc[:6]
-            status = 'Approved'
+            gateway = re.search(r'Gateway: (.+?)\n', message.text).group(1)
+            result = re.search(r'Result: (.+?)\n', message.text).group(1)
+            status = 'Approved ✅'
             gateway = 'Unknown'
             result = 'Unknown'
 
-            # Format the new credit card message
+            response = requests.get(f"https://bins.antipublic.cc/bins/{bin}")
+            if response.status_code == 200:
+                data = response.json()
+                info = data.get('level')
+                bank = data.get('bank')
+                type = data.get('type')
+                country = data.get('country')
+                country_flag = data.get('countryInfo').get('emoji')
+            else:
+                info = 'Unknown'
+                bank = 'Unknown'
+                country = 'Unknown'
+
             current_time = datetime.now().strftime("%a %b %d %H:%M:%S %Y")
             new_text = f"""• Card ⌁
    {cc}|{date}|{cvv}
@@ -76,9 +88,10 @@ async def alterchkbot(app, message):
 
 • Bin  ⌁ ({bin})
 
-• Info ⌁ CREDIT - MASTERCARD - CIRRUS
-• Bank ⌁ CAPITAL ONE, NATIONAL ASSOCIAT ION
-• Country ⌁ US - 🇺🇸
+• Info ⌁ {info}
+• Bank ⌁ {bank}
+• Type ⌁ {type}
+• Country ⌁ {country} {country_flag}
 
 Check by - ALPHA
 
@@ -95,7 +108,6 @@ Check by - ALPHA
         print(e)
 
 def card_exists_in_alterchkbot_file(card):
-    # Check if the credit card exists in Kurumi.txt
     with open('alterchk.txt', 'r', encoding='utf-8') as f:
         for line in f:
             if card in line:
