@@ -65,9 +65,9 @@ async def alterchkbot(app, message):
             cvv = cvv_match.group(0)
 
             bin = cc[:6]
-            gateway = re.search(r'Gateway: (.+?)\n', message.text).group(1)
-            result = re.search(r'Result: (.+?)\n', message.text).group(1)
-            status = 'Approved ✅'
+#            gateway = re.search(r'Gateway: (.+?)\n', message.text).group(1)
+#            result = re.search(r'Result: (.+?)\n', message.text).group(1)
+#            status = 'Approved ✅'
 #            gateway = 'Unknown'
 #            result = 'Unknown'
 
@@ -92,7 +92,7 @@ async def alterchkbot(app, message):
 • Gateway ⌁ {gateway}
 • Result ⌁ {result}
 
-• Bin  ⌁ ({bin})
+• Bin  ⌁ #{bin}
 
 • Info ⌁ {info}
 • Bank ⌁ {bank}
