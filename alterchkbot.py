@@ -3,7 +3,6 @@ import asyncio
 from pyrogram import Client, filters
 from config import API_ID, API_HASH, SESSION, SEND_ID
 from datetime import datetime
-from random_address import real_random_address
 import os
 import requests
 
@@ -56,18 +55,12 @@ async def alterchkbot(app, message):
             new_text = new_text.replace('———-»Info«-———-', '━━━━━━━━━━━━━━━━━')
             new_text = new_text.replace('-»', '➻')
 
-            cc_match = re.search(r'\d{16}', new_text)
-            date_match = re.search(r'\d{2}\|\d{2}', new_text)
-            cvv_match = re.search(r'\d{3}', new_text)
-            if cc_match is None or date_match is None or cvv_match is None:
-                return
-            cc = cc_match.group(0)
-            date = date_match.group(0)
-            cvv = cvv_match.group(0)
-
+            cc = re.search(r'\d{16}', new_text).group(0)
+            date = re.search(r'\d{2}\|\d{2}', new_text).group(0)
+            cvv = re.search(r'\d{3}', new_text).group(0)
             bin = cc[:6]
-            gateway = re.search(r'Gateway: (.+?)\n', message.text).group(1)
-            result = re.search(r'Result: (.+?)\n', message.text).group(1)
+            gateway = re.search(r'Gateway: (.+?)\n', message.text).group(0)
+            result = re.search(r'Result: (.+?)\n', message.text).group(0)
             status = 'Approved ✅'
             gateway = 'Unknown'
             result = 'Unknown'
@@ -93,7 +86,7 @@ async def alterchkbot(app, message):
 • Gateway ⌁ {gateway}
 • Result ⌁ {result}
 
-• Bin  ⌁ #{bin}
+• Bin  ⌁ ({bin})
 
 • Info ⌁ {info}
 • Bank ⌁ {bank}
