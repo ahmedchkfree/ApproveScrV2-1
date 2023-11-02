@@ -4,10 +4,8 @@ from pyrogram import Client, filters
 from config import API_ID, API_HASH, SESSION, SEND_ID
 from datetime import datetime
 from random_address import real_random_address
-import os, sys
+import os
 import requests
-import names
-import random
 
 current_directory = os.path.dirname(os.path.realpath(__file__))
 
