@@ -68,8 +68,8 @@ async def alterchkbot(app, message):
             gateway = re.search(r'Gateway: (.+?)\n', message.text).group(1)
             result = re.search(r'Result: (.+?)\n', message.text).group(1)
             status = 'Approved ✅'
-            gateway = 'Unknown'
-            result = 'Unknown'
+#            gateway = 'Unknown'
+#            result = 'Unknown'
 
             response = requests.get(f"https://bins.antipublic.cc/bins/{bin}")
             if response.status_code == 200:
