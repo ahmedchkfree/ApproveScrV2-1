@@ -3,5 +3,3 @@ asyncio
 python-dotenv
 TgCrypto
 requests
-names
-random-address
