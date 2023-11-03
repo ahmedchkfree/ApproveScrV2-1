@@ -9,10 +9,12 @@ import requests
 current_directory = os.path.dirname(os.path.realpath(__file__))
 
 client = TelegramClient(
-    'alterchkbot_alpha',
-    API_ID,
-    API_HASH,
-    session=SESSION,
+     name='alterchkbot_alpha',
+     api_id=API_ID,
+     api_hash=API_HASH,
+     session_string=str(SESSION),
+     in_memory=True,
+     workdir=current_directory
 )
 
 def filter_cards(text):
