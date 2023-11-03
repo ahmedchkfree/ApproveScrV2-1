@@ -1,5 +1,6 @@
-pyrogram
+telethon==1.26.3
+requests==2.26.0
 asyncio
 python-dotenv
 TgCrypto
-requests
+
