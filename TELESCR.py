@@ -1,6 +1,7 @@
 import re
 import asyncio
 from pyrogram import Client, filters
+from config import API_ID, API_HASH, SESSION, SEND_ID
 from pyrogram.types import Message
 from datetime import datetime
 import os
