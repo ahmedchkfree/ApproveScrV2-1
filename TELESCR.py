@@ -9,23 +9,27 @@ import requests
 current_directory = os.path.dirname(os.path.realpath(__file__))
 
 client = TelegramClient(
-    str(SESSION),
-    API_ID,
-    API_HASH,
+    session=str(SESSION),
+    api_id=API_ID,
+    api_hash=API_HASH,
+    workdir=current_directory
 )
 
-@client.on(events.NewMessage(chats=SEND_ID))
-async def alterchkbot(event):
-    message = event.message
+def filter_cards(text):
+    regex = r'\d{16}.*\d{3}'
+    matches = re.findall(regex, text)
+    if matches:
+        return ''.join(matches)
+    else:
+        return None
+
+async def alterchkbot(message):
     try:
         rt = 0
         while rt < 6:
-            if ('Checking CC. Please wait.🟥' in message.text or 
-                'Checking CC. Please wait.🟧' in message.text or 
-                'Checking CC. Please wait.🟩' in message.text or 
-                'CHECKING CARD 🔴' in message.text):
+            if 'Checking CC. Please wait.🟥' in message.text or 'Checking CC. Please wait.🟧' in message.text or 'Checking CC. Please wait.🟩' in message.text or 'CHECKING CARD 🔴' in message.text:
                 await asyncio.sleep(30)
-                message = await client.get_messages(entity=SEND_ID, ids=message.id)
+                message = await client.get_messages(chat_id=message.chat_id, ids=message.id)
                 rt += 1
                 continue
             else:
@@ -91,7 +95,7 @@ Check by - ALPHA
 • Time : {current_time}"""
 
             # Post the new credit card to the channel
-            await client.send_message(SEND_ID, new_text)
+            await client.send_message(SEND_ID, text=new_text)
 
             # Write the new credit card to Kurumi.txt
             with open('alterchk.txt', 'a', encoding='utf-8') as f:
@@ -100,14 +104,6 @@ Check by - ALPHA
     except Exception as e:
         print(e)
 
-def filter_cards(text):
-    regex = r'\d{16}.*\d{3}'
-    matches = re.findall(regex, text)
-    if matches:
-        return ''.join(matches)
-    else:
-        return None
-
 def card_exists_in_alterchkbot_file(card):
     with open('alterchk.txt', 'r', encoding='utf-8') as f:
         for line in f:
@@ -115,9 +111,10 @@ def card_exists_in_alterchkbot_file(card):
                 return True
     return False
 
-async def main():
-    await client.start()
-    await client.run_until_disconnected()
+@client.on(events.NewMessage)
+async def suck(event):
+    if event.raw_text:
+        await asyncio.create_task(alterchkbot(event))
 
-if __name__ == '__main__':
-    asyncio.run(main())
+client.start()
+client.run_until_disconnected()
