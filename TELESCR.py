@@ -1,15 +1,24 @@
 import re
 import asyncio
-from telethon.sync import TelegramClient, events
-from config import API_ID, API_HASH, SESSION, SEND_ID
+from pyrogram import Client, filters
+from pyrogram.types import Message
 from datetime import datetime
 import os
 import requests
 
-client = TelegramClient(
-    str(SESSION),
-    API_ID,
-    API_HASH
+API_ID = 'YOUR_API_ID'
+API_HASH = 'YOUR_API_HASH'
+SESSION = 'YOUR_SESSION_STRING'
+SEND_ID = 'YOUR_SEND_ID'
+
+current_directory = os.path.dirname(os.path.realpath(__file__))
+
+app = Client(
+    'alterchkbot_alpha',
+    api_id=API_ID,
+    api_hash=API_HASH,
+    session_name=SESSION,
+    workdir=current_directory
 )
 
 def filter_cards(text):
@@ -20,13 +29,16 @@ def filter_cards(text):
     else:
         return None
 
-async def alterchkbot(message):
+async def alterchkbot(_, message: Message):
     try:
         rt = 0
         while rt < 6:
             if 'Checking CC. Please wait.🟥' in message.text or 'Checking CC. Please wait.🟧' in message.text or 'Checking CC. Please wait.🟩' in message.text or 'CHECKING CARD 🔴' in message.text:
                 await asyncio.sleep(30)
-                message = await client.get_messages(chat_id=message.chat_id, ids=message.id)
+                message = await message.reply_text(
+                    "Checking CC. Please wait.",
+                    quote=True
+                )
                 rt += 1
                 continue
             else:
@@ -92,7 +104,7 @@ Check by - ALPHA
 • Time : {current_time}"""
 
             # Post the new credit card to the channel
-            await client.send_message(SEND_ID, text=new_text)
+            await app.send_message(SEND_ID, text=new_text)
 
             # Write the new credit card to Kurumi.txt
             with open('alterchk.txt', 'a', encoding='utf-8') as f:
@@ -108,10 +120,9 @@ def card_exists_in_alterchkbot_file(card):
                 return True
     return False
 
-@client.on(events.NewMessage)
-async def suck(event):
-    if event.raw_text:
-        await asyncio.create_task(alterchkbot(event))
+@app.on_message(filters.text)
+async def suck(_, message: Message):
+    if message.text:
+        await asyncio.create_task(alterchkbot(_, message))
 
-client.start()
-client.run_until_disconnected()
+app.run()
