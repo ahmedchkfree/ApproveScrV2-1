@@ -6,7 +6,7 @@ from datetime import datetime
 import os
 import requests
 
-current_directory = os.path.dirname(os.path.realpath(__file__)
+current_directory = os.path.dirname(os.path.realpath(__file__))
 
 client = TelegramClient(
     str(SESSION),
