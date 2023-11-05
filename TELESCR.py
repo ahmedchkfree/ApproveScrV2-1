@@ -12,7 +12,6 @@ client = TelegramClient(
     session=str(SESSION),
     api_id=API_ID,
     api_hash=API_HASH,
-    workdir=current_directory
 )
 
 def filter_cards(text):
