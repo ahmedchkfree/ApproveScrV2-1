@@ -1,37 +1,31 @@
 import re
 import asyncio
-from telethon.sync import TelegramClient, events
+from telethon import TelegramClient, events
 from config import API_ID, API_HASH, SESSION, SEND_ID
 from datetime import datetime
 import os
 import requests
 
-current_directory = os.path.dirname(os.path.realpath(__file__))
+current_directory = os.path.dirname(os.path.realpath(__file__)
 
 client = TelegramClient(
-     name='alterchkbot_alpha',
-     api_id=API_ID,
-     api_hash=API_HASH,
-     session_string=str(SESSION),
-     in_memory=True,
-     workdir=current_directory
+    str(SESSION),
+    API_ID,
+    API_HASH,
 )
 
-def filter_cards(text):
-    regex = r'\d{16}.*\d{3}'
-    matches = re.findall(regex, text)
-    if matches:
-        return ''.join(matches)
-    else:
-        return None
-
-async def alterchkbot(message):
+@client.on(events.NewMessage(chats=SEND_ID))
+async def alterchkbot(event):
+    message = event.message
     try:
         rt = 0
         while rt < 6:
-            if 'Checking CC. Please wait.🟥' in message.text or 'Checking CC. Please wait.🟧' in message.text or 'Checking CC. Please wait.🟩' in message.text or 'CHECKING CARD 🔴' in message.text:
+            if ('Checking CC. Please wait.🟥' in message.text or 
+                'Checking CC. Please wait.🟧' in message.text or 
+                'Checking CC. Please wait.🟩' in message.text or 
+                'CHECKING CARD 🔴' in message.text):
                 await asyncio.sleep(30)
-                message = await client.get_messages(chat_id=message.chat_id, ids=message.id)
+                message = await client.get_messages(entity=SEND_ID, ids=message.id)
                 rt += 1
                 continue
             else:
@@ -106,6 +100,14 @@ Check by - ALPHA
     except Exception as e:
         print(e)
 
+def filter_cards(text):
+    regex = r'\d{16}.*\d{3}'
+    matches = re.findall(regex, text)
+    if matches:
+        return ''.join(matches)
+    else:
+        return None
+
 def card_exists_in_alterchkbot_file(card):
     with open('alterchk.txt', 'r', encoding='utf-8') as f:
         for line in f:
@@ -113,10 +115,9 @@ def card_exists_in_alterchkbot_file(card):
                 return True
     return False
 
-@client.on(events.NewMessage(chats=[SEND_ID]))
-async def suck(event):
-    if event.raw_text:
-        await asyncio.create_task(alterchkbot(event))
+async def main():
+    await client.start()
+    await client.run_until_disconnected()
 
-client.start()
-client.run_until_disconnected()
+if __name__ == '__main__':
+    asyncio.run(main())
