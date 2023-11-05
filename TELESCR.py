@@ -1,18 +1,18 @@
 import re
 import asyncio
-from telethon import TelegramClient, events
+from telethon.sync import TelegramClient, events
 from config import API_ID, API_HASH, SESSION, SEND_ID
 from datetime import datetime
 import os
 import requests
 
-current_directory = os.path.dirname(os.path.realpath(__file__))
-
 client = TelegramClient(
-    session=str(SESSION),
-    api_id=API_ID,
-    api_hash=API_HASH,
+    str(SESSION),
+    API_ID,
+    API_HASH
 )
+
+# Rest of the code remains the same as in the previous response
 
 def filter_cards(text):
     regex = r'\d{16}.*\d{3}'
