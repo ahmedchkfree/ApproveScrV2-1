@@ -12,8 +12,6 @@ client = TelegramClient(
     API_HASH
 )
 
-# Rest of the code remains the same as in the previous response
-
 def filter_cards(text):
     regex = r'\d{16}.*\d{3}'
     matches = re.findall(regex, text)
