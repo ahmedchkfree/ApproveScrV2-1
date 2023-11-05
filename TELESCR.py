@@ -6,11 +6,6 @@ from datetime import datetime
 import os
 import requests
 
-API_ID = 'YOUR_API_ID'
-API_HASH = 'YOUR_API_HASH'
-SESSION = 'YOUR_SESSION_STRING'
-SEND_ID = 'YOUR_SEND_ID'
-
 current_directory = os.path.dirname(os.path.realpath(__file__))
 
 app = Client(
