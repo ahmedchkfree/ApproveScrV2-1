@@ -1,4 +1,4 @@
-telethon
+telethon==1.28.5
 requests==2.26.0
 asyncio
 python-dotenv
