@@ -6,12 +6,6 @@ from datetime import datetime
 import requests
 from config import API_ID, API_HASH, SESSION, SEND_ID
 
-# Define your API ID, API Hash, and session
-API_ID = 'your_api_id'
-API_HASH = 'your_api_hash'
-SESSION = 'your_session'
-SEND_ID = 'your_channel_id'
-
 async def main():
     client = TelegramClient('alterchkbot_alpha', API_ID, API_HASH)
     await client.start()
