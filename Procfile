@@ -1,1 +1,1 @@
-worker: python3 TELESCR.py
+worker: python3 alterchkbot.py
