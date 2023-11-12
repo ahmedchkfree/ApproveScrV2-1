@@ -1,6 +1,6 @@
 import re
 import asyncio
-from telethon import TelegramClient, events
+from pyrogram import Client, filters
 from config import API_ID, API_HASH, SESSION, SEND_ID
 from datetime import datetime
 import os
@@ -8,13 +8,17 @@ import requests
 
 current_directory = os.path.dirname(os.path.realpath(__file__))
 
-client = TelegramClient(
-    session='alterchkbot_alpha',
-    api_id=API_ID,
-    api_hash=API_HASH
+app = Client(
+     name='alterchkbot_alpha',
+     api_id=API_ID,
+     api_hash=API_HASH,
+     session_string=str(SESSION),
+     in_memory=True,
+     workdir=current_directory
 )
 
-async def filter_cards(text):
+
+def filter_cards(text):
     regex = r'\d{16}.*\d{3}'
     matches = re.findall(regex, text)
     if matches:
@@ -22,47 +26,41 @@ async def filter_cards(text):
     else:
         return None
 
-async def alterchkbot(message):
+async def alterchkbot(app, message):
     try:
         rt = 0
         while rt < 6:
-            if 'Checking CC. Please wait.🟥' in message.message or 'Checking CC. Please wait.🟧' in message.message or 'Checking CC. Please wait.🟩' in message.message or 'CHECKING CARD 🔴' in message.message:
+            if 'Checking CC. Please wait.🟥' in message.text or 'Checking CC. Please wait.🟧' in message.text or 'Checking CC. Please wait.🟩' in message.text or 'CHECKING CARD 🔴' in message.text:
                 await asyncio.sleep(30)
-                message = await client.get_messages(entity=message.chat_id, ids=message.id)
+                message = await app.get_messages(chat_id=message.chat.id, message_ids=message.id)
                 rt += 1
                 continue
             else:
                 break
 
-        if re.search(r'Approved', message.message):
-            card = await filter_cards(message.message)
+        if re.search(r'Approved', message.text):
+            card = filter_cards(message.text)
             if card is None:
                 return
 
             # Check if the card has been posted before
-            if await card_exists_in_alterchkbot_file(card):
+            if card_exists_in_alterchkbot_file(card):
                 return
 
             new_text = re.sub(r'Checked by .* User]', '**Checked ву [˹ᴧŁþнᴧ ꭙ˼](tg://user?id=1057412250)** \n━━━━━━━━━━━━━━━━━',
-                              message.message)
+                              message.text)
 
             new_text = new_text.replace('Bot by --» Tfp0days☃️', '')
             new_text = new_text.replace('———»Details«———', '━━━━━━━━━━━━━━━━━')
             new_text = new_text.replace('———-»Info«-———-', '━━━━━━━━━━━━━━━━━')
             new_text = new_text.replace('-»', '➻')
 
-            cc_match = re.search(r'\d{16}', new_text)
-            date_match = re.search(r'\d{2}\|\d{2}', new_text)
-            cvv_match = re.search(r'\d{3}', new_text)
-            if cc_match is None or date_match is None or cvv_match is None:
-                return
-            cc = cc_match.group(0)
-            date = date_match.group(0)
-            cvv = cvv_match.group(0)
-
+            cc = re.search(r'\d{16}', new_text).group(0)
+            date = re.search(r'\d{2}\|\d{2}', new_text).group(0)
+            cvv = re.search(r'\d{3}', new_text).group(0)
             bin = cc[:6]
-            gateway = re.search(r'Gateway: (.+?)\n', message.message).group(1)
-            result = re.search(r'Result: (.+?)\n', message.message).group(1)
+            gateway = re.search(r'Gateway: (.+?)\n', message.text).group(1)
+            result = re.search(r'Result: (.+?)\n', message.text).group(1)
             status = 'Approved ✅'
             gateway = 'Unknown'
             result = 'Unknown'
@@ -100,7 +98,7 @@ Check by - ALPHA
 • Time : {current_time}"""
 
             # Post the new credit card to the channel
-            await client.send_message(SEND_ID, message=new_text)
+            await app.send_message(SEND_ID, text=new_text)
 
             # Write the new credit card to Kurumi.txt
             with open('alterchk.txt', 'a', encoding='utf-8') as f:
@@ -109,17 +107,16 @@ Check by - ALPHA
     except Exception as e:
         print(e)
 
-async def card_exists_in_alterchkbot_file(card):
+def card_exists_in_alterchkbot_file(card):
     with open('alterchk.txt', 'r', encoding='utf-8') as f:
         for line in f:
             if card in line:
                 return True
     return False
 
-@client.on(events.NewMessage())
-async def suck(event):
-    if event.message:
-        await asyncio.create_task(alterchkbot(event.message))
+@app.on_message(filters.text)
+async def suck(Client, message):
+    if message.text:
+        await asyncio.create_task(alterchkbot(app, message))
 
-client.start()
-client.run_until_disconnected()
+app.run()
