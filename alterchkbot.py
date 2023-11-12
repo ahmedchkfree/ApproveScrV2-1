@@ -59,8 +59,11 @@ async def alterchkbot(app, message):
             date = re.search(r'\d{2}\|\d{2}', new_text).group(0)
             cvv = re.search(r'\d{3}', new_text).group(0)
             bin = cc[:6]
-            gateway = re.search(r'Gateway: (.+?)\n', message.text).group(1)
-            result = re.search(r'Result: (.+?)\n', message.text).group(1)
+            gateway_search = re.search(r'Gateway: (.+?)\n', message.text)
+            gateway = gateway_search.group(1) if gateway_search else 'Unknown'
+
+            result_search = re.search(r'Result: (.+?)\n', message.text)
+            result = result_search.group(1) if result_search else 'Unknown'
             status = 'Approved ✅'
             gateway = 'Unknown'
             result = 'Unknown'
