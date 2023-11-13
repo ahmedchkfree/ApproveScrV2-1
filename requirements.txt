@@ -2,3 +2,4 @@ pyrogram
 asyncio
 python-dotenv
 TgCrypto
+requests
