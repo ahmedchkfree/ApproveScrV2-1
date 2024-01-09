@@ -9,7 +9,7 @@ import requests
 current_directory = os.path.dirname(os.path.realpath(__file__))
 
 app = Client(
-     name='alterchkbot_alpha',
+     name='ahmedchkccfreebot_alpha',
      api_id=API_ID,
      api_hash=API_HASH,
      session_string=str(SESSION),
